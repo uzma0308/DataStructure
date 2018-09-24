@@ -1,0 +1,36 @@
+import java.util.*; 
+
+class GraphDfs{
+    boolean visited[];
+    Graph g;
+    Stack<Integer> stack;
+    
+    GraphDfs(Graph g){
+        this.g = g;
+        visited = new boolean[g.noOfVertex];
+        stack = new Stack<Integer>(); 
+    }
+    
+    public void graphDfsTraverse(){
+        stack.push(0);
+        visited[0] = true;
+        System.out.println(0);
+       
+        while(!stack.empty()){
+            boolean isAllVisited = false;
+            for(int i=0;i<g.Nodes[stack.peek()].size();i++){
+                if(!visited[g.Nodes[stack.peek()].get(i)]){
+                    visited[g.Nodes[stack.peek()].get(i)] = true;
+                    System.out.println(g.Nodes[stack.peek()].get(i));
+                    stack.push(g.Nodes[stack.peek()].get(i));
+                    isAllVisited = true;
+                }
+            }
+            
+            if(!isAllVisited){
+                stack.pop();
+            }
+        }
+    }
+    
+}
