@@ -1,36 +1,80 @@
-import java.util.*; 
+import java.util.LinkedList;
+import java.util.Stack;
 
-class GraphDfs{
-    boolean visited[];
-    Graph g;
-    Stack<Integer> stack;
+
+
+public class Graph{
     
-    GraphDfs(Graph g){
-        this.g = g;
-        visited = new boolean[g.noOfVertex];
-        stack = new Stack<Integer>(); 
-    }
+    int V;
+    LinkedList<Integer> l[];
+    Stack<Integer> s;
+    int[] boolArr;
     
-    public void graphDfsTraverse(){
-        stack.push(0);
-        visited[0] = true;
-        System.out.println(0);
-       
-        while(!stack.empty()){
-            boolean isAllVisited = false;
-            for(int i=0;i<g.Nodes[stack.peek()].size();i++){
-                if(!visited[g.Nodes[stack.peek()].get(i)]){
-                    visited[g.Nodes[stack.peek()].get(i)] = true;
-                    System.out.println(g.Nodes[stack.peek()].get(i));
-                    stack.push(g.Nodes[stack.peek()].get(i));
-                    isAllVisited = true;
-                }
-            }
-            
-            if(!isAllVisited){
-                stack.pop();
-            }
+    Graph(int V){
+        
+        this.V = V;
+        l = new LinkedList[V];
+        s = new Stack();
+        boolArr = new int[V];
+        
+        for(int i = 0; i < V; i++){
+            l[i] = new LinkedList<>();
         }
     }
+    void addEdge(int src, int des){
+        
+        l[src].add(des);
+        l[des].add(src);
+  }
+  
+  void print()
+  {
+      for (int i = 0;i<V;i++)
+      {
+         System.out.println("For node "+i+" :\n "
+         + l[i]+"\n");
+      }
+  }
     
+    void printDFS(int start){
+        int t;
+		boolean boolCheck;
+        s.push(start);
+        boolArr[start] = 1;
+        System.out.println(start);
+        while(!s.empty()){
+            
+            t = s.peek();
+            boolCheck = false;
+            for ( Integer x : l[t]){
+                
+                   if(boolArr[x]==0){
+                        s.push(x);
+                        boolArr[x] = 1;
+                        boolCheck = true;
+                        System.out.println(x);
+                        break;
+                   }
+           }
+           if(!boolCheck)
+           {
+               s.pop();
+           }
+        
+        }
+        
+        
+    }
+   
+
+    public static void main(String []args){
+        
+        Graph g = new Graph(5);
+        g.addEdge(0,1);
+		g.addEdge(0,2);
+		g.addEdge(1,3);
+		g.addEdge(1,4);
+	    g.print();
+        g.printDFS(0);
+    }
 }
