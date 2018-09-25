@@ -1,0 +1,82 @@
+import java.util.*;
+
+public class Main{
+    
+    int V;
+    LinkedList<Integer> l[];
+    Stack<Integer> s = new Stack<Integer>();
+    ArrayList<Integer> al = new ArrayList<Integer>(); 
+    
+    Main(int V){
+        
+        this.V = V;
+        l = new LinkedList[V];
+        
+        for(int i = 0; i < V; i++){
+            l[i] = new LinkedList<>();
+        }
+    }
+    void addEdge(int src, int des){
+        
+        l[src].addFirst(des);
+        l[des].addFirst(src);
+    }
+    
+    void print(){
+        
+        for(int i = 0; i < V; i++){
+            System.out.println("AdjencyList for "+ i);
+            for(Integer a:l[i])
+            {
+                System.out.println(a+" ");
+            }
+            System.out.println("\n");
+        }
+    }
+    void connectedGraph()
+    {
+        int x , k , connected = 0;
+        
+        while (al.size() != V)
+        {
+            
+            k = 0;
+            while(k < V){
+                if(!al.contains(k)){
+                    s.push(k);
+                    al.add(k);
+                    break;
+                }
+                k++;
+            }
+            while(!s.empty())
+            {
+                x = s.pop();
+                for(Integer a : l[x]){
+                    if(!al.contains(a)){
+                        s.push(a);
+                        al.add(a);
+                    }
+                }
+            }
+            connected++;
+        }
+        
+        System.out.println("No of connected Graph "+connected);
+     
+    }
+   
+
+    public static void main(String []args){
+        
+        Main g = new Main(7);
+        g.addEdge(0,2);
+        g.addEdge(0,3);
+        g.addEdge(2,1);
+        g.addEdge(2,4);
+        g.addEdge(3,4);
+        g.addEdge(1,6);
+        g.print();
+        g.connectedGraph();
+    }
+}
