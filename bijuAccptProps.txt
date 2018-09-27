@@ -1,0 +1,104 @@
+import java.util.*;
+public class Main
+{
+    int V;
+    LinkedList<Integer> l[];
+    Stack<Integer> s = new Stack<Integer>();
+    ArrayList<Integer> al = new ArrayList<Integer>(); 
+    Integer[] girls;
+    Integer[] cost;
+    
+    Main(int V){
+        
+        this.V = V;
+        l = new LinkedList[V];
+        cost = new Integer[V];
+        
+        for(int i = 0; i < V; i++){
+            l[i] = new LinkedList<>();
+        }
+    }
+    
+    void addEdge(int src, int des){
+        
+        l[src].addFirst(des);
+		l[des].addFirst(src);
+        
+    }
+    void initGirls(int no_girls)
+    {
+        girls = new Integer[no_girls];
+    }
+    
+    void print(){
+        
+        for(int i = 0; i < V; i++){
+            System.out.println("AdjencyList for "+ (i));
+            for(Integer a : l[i])
+            {
+                System.out.println(a+" ");
+            }
+            System.out.println("\n");
+        }
+    }
+    
+    void findCost(int no_girls){
+        int x,temp;
+        s.push(0);
+        al.add(0);
+        cost[0] = 0;
+        while (!s.empty()){
+            x = s.pop();
+            
+            for(Integer a: l[x]){
+                if(!al.contains(a)){
+                    s.push(a);
+                    al.add(a);
+                    cost[a] = cost[x]+1;
+                }
+            }
+            
+        }
+        // for ( int i = 0;i<V;i++)
+        // {
+        //     System.out.println(cost[i]+"\n");
+        // }
+        temp = girls[0];
+        for (int i = 0; i<no_girls-1 ;i++)
+        
+        {
+            if(cost[temp]>cost[girls[i+1]]){
+                temp = girls[i+1];
+            }
+            else if(cost[temp] == cost[girls[i+1]]){
+                if(temp>girls[i+1]){
+                   temp = girls[i+1]; 
+                }
+               
+            }
+            
+        }
+        
+        System.out.println("Accept from country "+ (temp+1));
+    }
+    
+	public static void main(String[] args) {
+		int vertices, no_girls, edge1, edge2;
+		Scanner s = new Scanner(System.in);
+		vertices = s.nextInt();
+		Main g = new Main(vertices);
+		for ( int i = 0 ; i < vertices-1; i++ ){
+    		   edge1 = s.nextInt();
+    		   edge2 = s.nextInt();
+    		   g.addEdge(edge1-1,edge2-1);
+		}
+		//g.print();
+		no_girls = s.nextInt();
+		g.initGirls(no_girls);
+		for ( int i = 0 ; i < no_girls; i++ ){
+    		   g.girls[i] = s.nextInt()-1;
+		}
+		
+		g.findCost(no_girls);
+	}
+}
